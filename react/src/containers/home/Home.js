@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./home.css";
 import Person from "../../components/person/Person";
 
-const People = [
-  {
-    fname: "Mikheil",
-    lname: "Saakashvili",
-    pid: "5555555",
-    image:
-      "http://intermedia.ge/uploads/article_images/small/57461354446771.jpg",
-    dob: "12/05/2001",
-    pob: "Georgia",
-    gender: "Male",
-  },
-];
-
-const testResults = [];
-
 function Home() {
+  useEffect(() => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:4000/get_employees", requestOptions)
+      .then((response) => response.json())
+      .then((result) => setResults(result))
+      .catch((error) => console.log("error", error));
+  }, []);
+
   const sendRequest = (fname, lname) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -34,11 +31,10 @@ function Home() {
     };
 
     fetch("http://localhost:4000/find_employee", requestOptions)
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((result) => {
         setResults(result);
-        testResults.push(result);
-        console.log("Search results: " + results);
+        // console.log("Search results: " + results);
       })
       .catch((error) => console.log("error", error));
   };
@@ -46,13 +42,17 @@ function Home() {
   const [searchName, setSearchName] = useState("");
   const [searchLname, setSearchLname] = useState("");
   const [results, setResults] = useState([]);
+  console.log(results);
 
   return (
     <body>
       <div className="side_container">
         <div className="side_logo_container"></div>
         <div className="side_profile_container">
-          <img src="http://intermedia.ge/uploads/article_images/small/57461354446771.jpg"></img>
+          <img
+            src="http://intermedia.ge/uploads/article_images/small/57461354446771.jpg"
+            alt="Mikheil Saakashvili"
+          ></img>
           <p>SuperUser</p>
         </div>
       </div>
@@ -97,16 +97,9 @@ function Home() {
               <th>Gender</th>
               <th>Address</th>
             </tr>
-            <Person info={People[0]} />
-            <Person info={People[0]} />
-            {results[0] ? <Person info={People[0]} /> : null}
-            {results[0]
-              ? testResults.map((item, index) => (
-                  <div key={index}>
-                    <Person info={People[0]} />
-                  </div>
-                ))
-              : null}
+            {results.map((item, index) => (
+              <Person info={item} key={index} />
+            ))}
           </table>
         </div>
       </div>

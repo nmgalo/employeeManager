@@ -17,6 +17,10 @@ module.exports = class Employee {
     );
   }
 
+  static getEmployees() {
+    return sql.execute("SELECT * FROM `citizens` LIMIT 10");
+  }
+
   static findEmployeeDetail(fname, lname, dob, gender, region) {
     console.log("Test length: " + gender.length);
     // Everything below this is :( will fix later

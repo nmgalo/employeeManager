@@ -5,14 +5,17 @@ const Person = (props) => {
   return (
     <tr className="person_table_row">
       <td>
-        <img src={props.info.image} alt={props.info.lname} />
+        <img
+          src={`data:image/png;base64,${props.info.image_code}`}
+          alt={props.info.lname}
+        />
       </td>
-      <td>{props.info.fname} </td>
-      <td>{props.info.lname}</td>
-      <td>{props.info.pid}</td>
+      <td>{props.info.first_name} </td>
+      <td>{props.info.last_name}</td>
+      <td>{props.info.dob}</td>
       <td>{props.info.dob}</td>
       <td>{props.info.gender}</td>
-      <td>{props.info.pob}</td>
+      <td>{props.info.region}</td>
     </tr>
   );
 };

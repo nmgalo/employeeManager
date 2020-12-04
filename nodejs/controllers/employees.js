@@ -18,6 +18,17 @@ exports.postEmployeeFind = (req, res, next) => {
     });
 };
 
+exports.getEmployees = (req, res, next) => {
+  Employee.getEmployees()
+    .then(([people, bufData]) => {
+      console.log(people);
+      res.send(people);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.postEmployeeFindDetail = (req, res, next) => {
   const fname = req.body.fname;
   const lname = req.body.lname;
