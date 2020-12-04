@@ -15,30 +15,37 @@ const People = [
   },
 ];
 
-const sendRequest = (fname, lname) => {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-  var urlencoded = new URLSearchParams();
-  urlencoded.append("fname", fname);
-  urlencoded.append("lname", lname);
-
-  var requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: "follow",
-  };
-
-  fetch("http://localhost:4000/find_employee", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-};
+const testResults = [];
 
 function Home() {
+  const sendRequest = (fname, lname) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("fname", fname);
+    urlencoded.append("lname", lname);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:4000/find_employee", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        setResults(result);
+        testResults.push(result);
+        console.log("Search results: " + results);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const [searchName, setSearchName] = useState("");
   const [searchLname, setSearchLname] = useState("");
+  const [results, setResults] = useState([]);
 
   return (
     <body>
@@ -92,6 +99,14 @@ function Home() {
             </tr>
             <Person info={People[0]} />
             <Person info={People[0]} />
+            {results[0] ? <Person info={People[0]} /> : null}
+            {results[0]
+              ? testResults.map((item, index) => (
+                  <div key={index}>
+                    <Person info={People[0]} />
+                  </div>
+                ))
+              : null}
           </table>
         </div>
       </div>

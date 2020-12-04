@@ -19,7 +19,7 @@ module.exports = class Employee {
 
   static findEmployeeDetail(fname, lname, dob, gender, region) {
     console.log("Test length: " + gender.length);
-    // Everything below this is :(
+    // Everything below this is :( will fix later
 
     if (dob.length == 0 && gender.length == 0 && region.length == 0) {
       return sql.execute(
