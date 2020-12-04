@@ -23,4 +23,12 @@ exports.postEmployeeFindDetail = (req, res, next) => {
   const lname = req.body.lname;
   const dob = req.body.dob;
   const gender = req.body.gender;
+
+  Item.findEmployeeDetail(fname, lname, dob, gender)
+    .then(([result, bufData]) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };

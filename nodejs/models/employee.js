@@ -1,4 +1,3 @@
-const rootDirectory = require("../utility/directory");
 const sql = require("../utility/sql");
 
 module.exports = class Employee {
