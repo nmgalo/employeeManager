@@ -8,10 +8,10 @@ exports.postEmployeeFind = (req, res, next) => {
   console.log(fname);
   console.log(lname);
 
-  Item.findEmployee(fname, lname)
+  Employee.findEmployee(fname, lname)
     .then(([person, bufData]) => {
       console.log(person);
-      res.send({ some: person });
+      res.send(person);
     })
     .catch((err) => {
       console.log(err);
@@ -23,9 +23,14 @@ exports.postEmployeeFindDetail = (req, res, next) => {
   const lname = req.body.lname;
   const dob = req.body.dob;
   const gender = req.body.gender;
+  const region = req.body.region;
 
-  Item.findEmployeeDetail(fname, lname, dob, gender)
+  console.log(req.body);
+  Employee.findEmployeeDetail(fname, lname, dob, gender, region)
     .then(([result, bufData]) => {
+      {
+        result[0] ? console.log("Success") : console.log("Fail");
+      }
       res.send(result);
     })
     .catch((err) => {
