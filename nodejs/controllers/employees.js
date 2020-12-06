@@ -18,6 +18,19 @@ exports.postEmployeeFind = (req, res, next) => {
     });
 };
 
+exports.findPagesAmount = (req, res, next) => {
+  const amountOnPage = parseInt(req.body.amount_on_page);
+  let amountOfPages = 0;
+  Employee.findPagesAmount()
+    .then(([result, bufData]) => {
+      amountOfPages = result[0].Amount / amountOnPage;
+      res.send(`${amountOfPages}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.getEmployees = (req, res, next) => {
   Employee.getEmployees()
     .then(([people, bufData]) => {

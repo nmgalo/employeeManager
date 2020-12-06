@@ -7,6 +7,7 @@ module.exports = class Employee {
     this.pid = pid;
     this.image = image;
     this.gender = gender;
+    this.address = address;
     this.personStatus = personStatus;
   }
 
@@ -17,16 +18,20 @@ module.exports = class Employee {
     );
   }
 
+  static findPagesAmount() {
+    return sql.execute("SELECT COUNT(*) as Amount FROM citizens.citizens");
+  }
+
   static getEmployees() {
-    return sql.execute("SELECT * FROM `citizens` LIMIT 10");
+    return sql.execute("SELECT * FROM `citizens` LIMIT 2");
   }
 
   static getEmployeesPaged(page) {
     //First page going to show me 20 entries (Limit 0 20)
     //Second page going to show me 20 entries (Limit 20 40)
 
-    let end = parseInt(page) * 20;
-    let start = end - 20;
+    let end = parseInt(page) * 2;
+    let start = end - 2;
     return sql.execute("SELECT * FROM `citizens` LIMIT ?, ?", [start, end]);
   }
 
@@ -40,7 +45,6 @@ module.exports = class Employee {
       [fname, lname, dob, gender, region]
     );
 
-    // Everything below this is :( will fix later AUCILEBLAD FIX !!!!
     //Ackchuallly below code is faster in terms of querying database so I'll leave the code commented out.
 
     // if (dob.length == 0 && gender.length == 0 && region.length == 0) {
