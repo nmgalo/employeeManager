@@ -29,6 +29,17 @@ exports.getEmployees = (req, res, next) => {
     });
 };
 
+exports.getEmployeesPaged = (req, res, next) => {
+  const page = req.body.page;
+  Employee.getEmployeesPaged(page)
+    .then(([people, bufData]) => {
+      res.send(people);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.postEmployeeFindDetail = (req, res, next) => {
   const fname = req.body.fname;
   const lname = req.body.lname;
