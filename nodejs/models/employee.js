@@ -19,7 +19,7 @@ module.exports = class Employee {
   }
 
   static findPagesAmount() {
-    return sql.execute("SELECT COUNT(*) as Amount FROM citizens.citizens");
+    return sql.execute("SELECT COUNT(*) as Amount FROM citizens");
   }
 
   static getEmployees() {
@@ -30,8 +30,8 @@ module.exports = class Employee {
     //First page going to show me 20 entries (Limit 0 20)
     //Second page going to show me 20 entries (Limit 20 40)
 
-    let end = parseInt(page) * 2;
-    let start = end - 2;
+    let end = 10;
+    let start = parseInt(page + 1) * 10;
     return sql.execute("SELECT * FROM `citizens` LIMIT ?, ?", [start, end]);
   }
 
@@ -41,7 +41,7 @@ module.exports = class Employee {
     region = "%" + region + "%";
 
     return sql.execute(
-      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND dob LIKE ? AND gender LIKE ? AND region LIKE ?",
+      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND birth_date LIKE ? AND gender LIKE ? AND region LIKE ?",
       [fname, lname, dob, gender, region]
     );
 

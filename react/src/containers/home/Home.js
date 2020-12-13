@@ -8,19 +8,9 @@ function Home() {
   const [results, setResults] = useState([]);
   const [pageAmount, setPageAmount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(results);
   console.log(pageAmount);
   console.log(currentPage);
   useEffect(() => {
-    // var requestOptions = {
-    //   method: "GET",
-    //   redirect: "follow",
-    // };
-
-    // fetch("http://localhost:4000/get_employees", requestOptions)
-    //   .then((response) => response.json())
-    //   .then((result) => setResults(result))
-    //   .catch((error) => console.log("error", error));
     var myHeaders0 = new Headers();
     myHeaders0.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -44,7 +34,7 @@ function Home() {
     myHeaders1.append("Content-Type", "application/x-www-form-urlencoded");
 
     var urlencoded1 = new URLSearchParams();
-    urlencoded1.append("amount_on_page", "2");
+    urlencoded1.append("amount_on_page", "10");
 
     var requestOptions2 = {
       method: "POST",
@@ -55,9 +45,13 @@ function Home() {
 
     fetch("http://localhost:4000/find_pages_amount", requestOptions2)
       .then((response) => response.json())
-      .then((result) => setPageAmount(parseInt(result)))
+      .then((result) => {
+        console.log(result);
+        setPageAmount(parseInt(result));
+      })
       .catch((error) => console.log("error", error));
   }, [currentPage]);
+  //add Currentpage to useeffect update
 
   const sendRequest = (fname, lname) => {
     var myHeaders = new Headers();
@@ -142,7 +136,7 @@ function Home() {
           </table>
           <div class="pagination">
             <a href="#">&laquo;</a>
-            {[...Array(pageAmount)].map((e, i) => (
+            {[...Array(6)].map((e, i) => (
               <a
                 href="#"
                 class={currentPage - 1 == i ? "active" : null}
@@ -153,6 +147,9 @@ function Home() {
             ))}
             <a href="#">&raquo;</a>
           </div>
+
+          {/* I am on page 63 I should be seeing pages 60 to 66 */}
+          {/*  */}
         </div>
       </div>
     </body>
