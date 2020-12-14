@@ -144,10 +144,14 @@ body {
   background-color: #ffffff;
 }
 .pagination {
-  display: inline-block;
+  margin: 2rem 0 0 0;
+  display: flex;
+  justify-content: center;
 }
 
-.pagination a {
+.pagination button {
+  width: 48px;
+  height: 33px;
   color: black;
   float: left;
   padding: 8px 16px;
@@ -155,22 +159,22 @@ body {
   border: 1px solid #ddd;
 }
 
-.pagination a.active {
-  background-color: #4caf50;
+.pagination button.active {
+  background-color: #4c7aaf;
   color: white;
-  border: 1px solid #4caf50;
+  border: 1px solid #1c1fc4;
 }
 
-.pagination a:hover:not(.active) {
+.pagination button:hover:not(.active) {
   background-color: #ddd;
 }
 
-.pagination a:first-child {
+.pagination button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
 
-.pagination a:last-child {
+.pagination button:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }

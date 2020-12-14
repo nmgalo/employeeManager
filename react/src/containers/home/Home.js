@@ -10,6 +10,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   console.log(pageAmount);
   console.log(currentPage);
+
   useEffect(() => {
     var myHeaders0 = new Headers();
     myHeaders0.append("Content-Type", "application/x-www-form-urlencoded");
@@ -78,7 +79,7 @@ function Home() {
   };
 
   return (
-    <body>
+    <div>
       <div className="side_container">
         <div className="side_logo_container"></div>
         <div className="side_profile_container">
@@ -134,25 +135,34 @@ function Home() {
               <Person info={item} key={index} />
             ))}
           </table>
-          <div class="pagination">
-            <a href="#">&laquo;</a>
+          <div className="pagination">
+            {[...Array(6)]
+              .map((e, i) =>
+                currentPage - i > 0 && currentPage - i !== currentPage ? (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentPage(currentPage - i)}
+                  >
+                    {currentPage - i}
+                  </button>
+                ) : null
+              )
+              .reverse()}
             {[...Array(6)].map((e, i) => (
-              <a
-                href="#"
-                class={currentPage - 1 == i ? "active" : null}
-                onClick={() => setCurrentPage(i + 1)}
+              <button
+                key={i}
+                className={i === 0 ? "active" : null}
+                onClick={() => setCurrentPage(currentPage + i)}
               >
-                {i + 1}
-              </a>
+                {currentPage + i}
+              </button>
             ))}
-            <a href="#">&raquo;</a>
           </div>
-
           {/* I am on page 63 I should be seeing pages 60 to 66 */}
           {/*  */}
         </div>
       </div>
-    </body>
+    </div>
   );
 }
 
