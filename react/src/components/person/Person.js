@@ -22,7 +22,7 @@ const Person = (props) => {
       <td>{date.toISOString().slice(0, -14)}</td>
       {/* <td>{props.info.birth_date}</td> */}
       <td>{props.info.gender}</td>
-      <td>{props.info.region}</td>
+      <td>{props.info.living_place}</td>
     </tr>
   );
 };

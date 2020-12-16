@@ -1,6 +1,5 @@
 .person_table_row td img {
-  width: 80px;
-  height: 90px;
+  height: 120px;
 }
 
 .person_table_row td,
@@ -17,4 +16,8 @@ th {
 .person_table_row td {
   text-align: center;
   font-size: 1.3rem;
+}
+
+.person_table_row td:last-child {
+  font-size: 1rem;
 }

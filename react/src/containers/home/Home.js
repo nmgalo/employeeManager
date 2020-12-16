@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import Person from "../../components/person/Person";
+import Spinner from "../../components/spinner/Spinner";
 
 function Home() {
   const [searchName, setSearchName] = useState("");
@@ -8,8 +9,8 @@ function Home() {
   const [results, setResults] = useState([]);
   const [pageAmount, setPageAmount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(pageAmount);
-  console.log(currentPage);
+  const [loading, setLoading] = useState(true);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     var myHeaders0 = new Headers();
@@ -27,7 +28,10 @@ function Home() {
 
     fetch("http://localhost:4000/get_employees_paged", requestOptions0)
       .then((response) => response.json())
-      .then((result) => setResults(result))
+      .then((result) => {
+        setResults(result);
+        setLoading(false);
+      })
       .catch((error) => console.log("error", error));
 
     //Code to get amount of pages
@@ -73,6 +77,7 @@ function Home() {
       .then((response) => response.json())
       .then((result) => {
         setResults(result);
+        setLoading(false);
         // console.log("Search results: " + results);
       })
       .catch((error) => console.log("error", error));
@@ -113,6 +118,9 @@ function Home() {
           <div
             className="search_button1"
             onClick={() => {
+              setSearching(true);
+              setResults([]);
+              setLoading(true);
               sendRequest(searchName, searchLname);
             }}
           >
@@ -131,33 +139,46 @@ function Home() {
               <th>Gender</th>
               <th>Address</th>
             </tr>
+
             {results.map((item, index) => (
               <Person info={item} key={index} />
             ))}
           </table>
-          <div className="pagination">
-            {[...Array(6)]
-              .map((e, i) =>
-                currentPage - i > 0 && currentPage - i !== currentPage ? (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(currentPage - i)}
-                  >
-                    {currentPage - i}
-                  </button>
-                ) : null
-              )
-              .reverse()}
-            {[...Array(6)].map((e, i) => (
-              <button
-                key={i}
-                className={i === 0 ? "active" : null}
-                onClick={() => setCurrentPage(currentPage + i)}
-              >
-                {currentPage + i}
-              </button>
-            ))}
-          </div>
+          {loading === true ? <Spinner /> : null}
+          {searching === false ? (
+            <div className="pagination">
+              {[...Array(6)]
+                .map((e, i) =>
+                  currentPage - i > 0 && currentPage - i !== currentPage ? (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setResults([]);
+                        setLoading(true);
+                        setCurrentPage(currentPage - i);
+                      }}
+                    >
+                      {currentPage - i}
+                    </button>
+                  ) : null
+                )
+                .reverse()}
+              {[...Array(6)].map((e, i) => (
+                <button
+                  key={i}
+                  className={i === 0 ? "active" : null}
+                  onClick={() => {
+                    setResults([]);
+                    setLoading(true);
+                    setCurrentPage(currentPage + i);
+                  }}
+                >
+                  {currentPage + i}
+                </button>
+              ))}
+            </div>
+          ) : null}
+
           {/* I am on page 63 I should be seeing pages 60 to 66 */}
           {/*  */}
         </div>
