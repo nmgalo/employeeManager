@@ -1,1 +1,1 @@
-WIP E-commerce with nodeJS
+WIP Employee manager/database system.
