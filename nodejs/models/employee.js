@@ -22,6 +22,12 @@ module.exports = class Employee {
     return sql.execute("SELECT COUNT(*) as Amount FROM citizens");
   }
 
+  static fromAddress(address) {
+    return sql.execute("SELECT * FROM `citizens` WHERE living_place=?", [
+      address,
+    ]);
+  }
+
   static getEmployees() {
     return sql.execute("SELECT * FROM `citizens` LIMIT 2");
   }
@@ -36,12 +42,12 @@ module.exports = class Employee {
   }
 
   static findEmployeeDetail(fname, lname, dob, gender, region) {
-    dob = "%" + dob + "%";
+    dob = new Date(`${dob}-01-01`).getTime();
     gender = "%" + gender + "%";
     region = "%" + region + "%";
 
     return sql.execute(
-      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND birth_date LIKE ? AND gender LIKE ? AND region LIKE ?",
+      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND birth_date > ? AND gender LIKE ? AND region LIKE ?",
       [fname, lname, dob, gender, region]
     );
 

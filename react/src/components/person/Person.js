@@ -21,8 +21,8 @@ const Person = (props) => {
       <td>{props.info.private_number}</td>
       <td>{date.toISOString().slice(0, -14)}</td>
       {/* <td>{props.info.birth_date}</td> */}
-      <td>{props.info.gender}</td>
-      <td>{props.info.living_place}</td>
+      <td>{props.info.gender === 1 ? "Male" : "Female"}</td>
+      <td onClick={props.onAddressClick}>{props.info.living_place}</td>
     </tr>
   );
 };

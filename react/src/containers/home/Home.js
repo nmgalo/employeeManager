@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./home.css";
 import Person from "../../components/person/Person";
 import Spinner from "../../components/spinner/Spinner";
+import Modal from "../../components/modal/Modal";
 
 function Home() {
   const [searchName, setSearchName] = useState("");
@@ -11,6 +12,12 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
+  const [filtering, setFiltering] = useState(false);
+  const [filterName, setFilterName] = useState("");
+  const [filterLname, setFilterLname] = useState("");
+  const [filterDob, setFilterDob] = useState("");
+  const [filterGender, setFilterGender] = useState("");
+  const [filterRegion, setFilterRegion] = useState("");
 
   useEffect(() => {
     var myHeaders0 = new Headers();
@@ -83,8 +90,94 @@ function Home() {
       .catch((error) => console.log("error", error));
   };
 
+  const filterSearch = (fname, lname, dob, gender, region) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("fname", fname);
+    urlencoded.append("lname", lname);
+    urlencoded.append("dob", dob);
+    urlencoded.append("gender", gender);
+    urlencoded.append("region", region);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:4000/find_employee_detail", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLoading(false);
+        setResults(result);
+        setFiltering(false);
+        console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const fromAddress = (address) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("address", address);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:4000/from_address", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLoading(false);
+        setResults(result);
+        console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   return (
     <div>
+      <Modal
+        show={filtering}
+        modalClosed={() => {
+          setFiltering(false);
+        }}
+        onNameChange={(event) => {
+          setFilterName(event.target.value);
+        }}
+        onLnameChange={(event) => {
+          setFilterLname(event.target.value);
+        }}
+        onDobChange={(event) => {
+          setFilterDob(event.target.value);
+        }}
+        onGenderChange={(event) => {
+          setFilterGender(event.target.value);
+        }}
+        onRegionChange={(event) => {
+          setFilterRegion(event.target.value);
+        }}
+        onButtonClick={() => {
+          setResults([]);
+          setLoading(true);
+          setSearching(true);
+          filterSearch(
+            filterName,
+            filterLname,
+            filterDob,
+            filterGender,
+            filterRegion
+          );
+        }}
+      />
       <div className="side_container">
         <div className="side_logo_container"></div>
         <div className="side_profile_container">
@@ -126,7 +219,9 @@ function Home() {
           >
             Search
           </div>
-          <div className="search_button2">Filter</div>
+          <div className="search_button2" onClick={() => setFiltering(true)}>
+            Filter
+          </div>
         </div>
         <div className="results_container">
           <table className="results_table">
@@ -141,7 +236,17 @@ function Home() {
             </tr>
 
             {results.map((item, index) => (
-              <Person info={item} key={index} />
+              <Person
+                info={item}
+                key={index}
+                onAddressClick={() => {
+                  setResults([]);
+                  setSearching(true);
+                  setLoading(true);
+                  console.log(item.living_place);
+                  fromAddress(item.living_place);
+                }}
+              />
             ))}
           </table>
           {loading === true ? <Spinner /> : null}

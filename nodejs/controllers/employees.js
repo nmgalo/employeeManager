@@ -31,6 +31,18 @@ exports.findPagesAmount = (req, res, next) => {
     });
 };
 
+exports.postFromAddress = (req, res, next) => {
+  let address = req.body.address;
+  Employee.fromAddress(address)
+    .then(([result, bufData]) => {
+      console.log(result);
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.getEmployees = (req, res, next) => {
   Employee.getEmployees()
     .then(([people, bufData]) => {
