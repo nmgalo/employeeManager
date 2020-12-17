@@ -3,6 +3,7 @@ import "./home.css";
 import Person from "../../components/person/Person";
 import Spinner from "../../components/spinner/Spinner";
 import Modal from "../../components/modal/Modal";
+import { PostData } from "../../services/PostData";
 
 function Home() {
   const [searchName, setSearchName] = useState("");
@@ -12,6 +13,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
+  const [filterSearching, setFilterSearching] = useState(false);
   const [filtering, setFiltering] = useState(false);
   const [filterName, setFilterName] = useState("");
   const [filterLname, setFilterLname] = useState("");
@@ -20,127 +22,65 @@ function Home() {
   const [filterRegion, setFilterRegion] = useState("");
 
   useEffect(() => {
-    var myHeaders0 = new Headers();
-    myHeaders0.append("Content-Type", "application/x-www-form-urlencoded");
+    filterSearch(
+      filterName,
+      filterLname,
+      filterDob,
+      filterGender,
+      filterRegion
+    );
+  }, [filterSearching]);
 
-    var urlencoded0 = new URLSearchParams();
-    urlencoded0.append("page", currentPage);
-
-    var requestOptions0 = {
-      method: "POST",
-      headers: myHeaders0,
-      body: urlencoded0,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/get_employees_paged", requestOptions0)
-      .then((response) => response.json())
-      .then((result) => {
-        setResults(result);
-        setLoading(false);
-      })
-      .catch((error) => console.log("error", error));
+  useEffect(() => {
+    var getEmployeesParams = new URLSearchParams();
+    getEmployeesParams.append("page", currentPage);
+    PostData("get_employees_paged", getEmployeesParams).then((result) => {
+      setResults(result);
+      setLoading(false);
+    });
 
     //Code to get amount of pages
-    var myHeaders1 = new Headers();
-    myHeaders1.append("Content-Type", "application/x-www-form-urlencoded");
 
-    var urlencoded1 = new URLSearchParams();
-    urlencoded1.append("amount_on_page", "10");
-
-    var requestOptions2 = {
-      method: "POST",
-      headers: myHeaders1,
-      body: urlencoded1,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/find_pages_amount", requestOptions2)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        setPageAmount(parseInt(result));
-      })
-      .catch((error) => console.log("error", error));
+    var pageParams = new URLSearchParams();
+    pageParams.append("amount_on_page", "10");
+    PostData("get_employees_paged", pageParams).then((result) => {
+      setPageAmount(parseInt(result));
+    });
   }, [currentPage]);
   //add Currentpage to useeffect update
 
   const sendRequest = (fname, lname) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("fname", fname);
-    urlencoded.append("lname", lname);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/find_employee", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setResults(result);
-        setLoading(false);
-        // console.log("Search results: " + results);
-      })
-      .catch((error) => console.log("error", error));
+    var findParams = new URLSearchParams();
+    findParams.append("fname", fname);
+    findParams.append("lname", lname);
+    PostData("find_employee", findParams).then((result) => {
+      setResults(result);
+      setLoading(false);
+    });
   };
 
-  const filterSearch = (fname, lname, dob, gender, region) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("fname", fname);
-    urlencoded.append("lname", lname);
-    urlencoded.append("dob", dob);
-    urlencoded.append("gender", gender);
-    urlencoded.append("region", region);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/find_employee_detail", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        setResults(result);
-        setFiltering(false);
-        console.log(result);
-      })
-      .catch((error) => console.log("error", error));
+  const filterSearch = (name, lname, dob, gender, region) => {
+    var filterParams = new URLSearchParams();
+    filterParams.append("fname", name);
+    console.log("Filter Name: " + filterName);
+    filterParams.append("lname", lname);
+    filterParams.append("dob", dob);
+    filterParams.append("gender", gender);
+    filterParams.append("region", region);
+    PostData("find_employee_detail", filterParams).then((result) => {
+      setResults(result);
+      setFiltering(false);
+      setLoading(false);
+    });
   };
 
   const fromAddress = (address) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("address", address);
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: urlencoded,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:4000/from_address", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setLoading(false);
-        setResults(result);
-        console.log(result);
-      })
-      .catch((error) => console.log("error", error));
+    var addressParams = new URLSearchParams();
+    addressParams.append("address", address);
+    PostData("from_address", addressParams).then((result) => {
+      setLoading(false);
+      setResults(result);
+    });
   };
 
   return (
@@ -165,17 +105,15 @@ function Home() {
         onRegionChange={(event) => {
           setFilterRegion(event.target.value);
         }}
+        nameValue={filterName}
+        lnameValue={filterLname}
+        dobValue={filterDob}
+        regionValue={filterRegion}
+        genderValue={filterGender}
         onButtonClick={() => {
           setResults([]);
           setLoading(true);
-          setSearching(true);
-          filterSearch(
-            filterName,
-            filterLname,
-            filterDob,
-            filterGender,
-            filterRegion
-          );
+          setFilterSearching(true);
         }}
       />
       <div className="side_container">

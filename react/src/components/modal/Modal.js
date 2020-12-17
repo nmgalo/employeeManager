@@ -29,15 +29,30 @@ class Modal extends Component {
           }}
         >
           <p>Name: </p>
-          <input onChange={this.props.onNameChange} />
+          <input
+            placeholder={this.props.nameplaceholder}
+            onChange={this.props.onNameChange}
+          />
           <p>Last Name: </p>
-          <input onChange={this.props.onLnameChange} />
+          <input
+            placeholder={this.props.lnameplaceholder}
+            onChange={this.props.onLnameChange}
+          />
           <p>Dob younger than: </p>
-          <input onChange={this.props.onDobChange} />
+          <input
+            placeholder={this.props.dobplaceholder}
+            onChange={this.props.onDobChange}
+          />
           <p>Gender: </p>
-          <input onChange={this.props.onGenderChange} />
+          <input
+            placeholder={this.props.genderplaceholder}
+            onChange={this.props.onGenderChange}
+          />
           <p>Region: </p>
-          <input onChange={this.props.onRegionChange} />
+          <input
+            placeholder={this.props.regionplaceholder}
+            onChange={this.props.onRegionChange}
+          />
           <button onClick={this.props.onButtonClick}>GO</button>
           {this.props.children}
         </div>
