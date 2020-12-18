@@ -42,13 +42,19 @@ module.exports = class Employee {
   }
 
   static findEmployeeDetail(fname, lname, dob, gender, region) {
-    dob = new Date(`${dob}-01-01`).getTime();
     gender = "%" + gender + "%";
     region = "%" + region + "%";
 
+    if (dob) {
+      dob = new Date(`${dob}-01-01`).getTime();
+      return sql.execute(
+        "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND birth_date > ? AND gender LIKE ? AND region LIKE ?",
+        [fname, lname, dob, gender, region]
+      );
+    }
     return sql.execute(
-      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND birth_date > ? AND gender LIKE ? AND region LIKE ?",
-      [fname, lname, dob, gender, region]
+      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? AND gender LIKE ? AND region LIKE ?",
+      [fname, lname, gender, region]
     );
 
     //Ackchuallly below code is faster in terms of querying database so I'll leave the code commented out.

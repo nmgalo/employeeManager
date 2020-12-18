@@ -1,0 +1,17 @@
+.search_container {
+  display: flex;
+  background-color: #000e4f;
+  width: 100%;
+  align-items: center;
+  height: 4.5rem;
+}
+
+.search_input_container {
+  margin: 0 3rem 0 7rem;
+}
+
+.search_input_container input {
+  width: 17rem;
+  height: 2rem;
+  margin: 0 2rem 0 0;
+}

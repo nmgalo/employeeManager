@@ -30,27 +30,27 @@ class Modal extends Component {
         >
           <p>Name: </p>
           <input
-            placeholder={this.props.nameplaceholder}
+            placeholder={this.props.values[0]}
             onChange={this.props.onNameChange}
           />
           <p>Last Name: </p>
           <input
-            placeholder={this.props.lnameplaceholder}
+            placeholder={this.props.values[1]}
             onChange={this.props.onLnameChange}
           />
           <p>Dob younger than: </p>
           <input
-            placeholder={this.props.dobplaceholder}
+            placeholder={this.props.values[2]}
             onChange={this.props.onDobChange}
           />
           <p>Gender: </p>
           <input
-            placeholder={this.props.genderplaceholder}
+            placeholder={this.props.values[3]}
             onChange={this.props.onGenderChange}
           />
           <p>Region: </p>
           <input
-            placeholder={this.props.regionplaceholder}
+            placeholder={this.props.values[4]}
             onChange={this.props.onRegionChange}
           />
           <button onClick={this.props.onButtonClick}>GO</button>

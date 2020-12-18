@@ -4,6 +4,8 @@ import Person from "../../components/person/Person";
 import Spinner from "../../components/spinner/Spinner";
 import Modal from "../../components/modal/Modal";
 import { PostData } from "../../services/PostData";
+import SideMenu from "../../components/sideMenu/SideMenu";
+import TopBar from "../../components/topBar/TopBar";
 
 function Home() {
   const [searchName, setSearchName] = useState("");
@@ -21,14 +23,24 @@ function Home() {
   const [filterGender, setFilterGender] = useState("");
   const [filterRegion, setFilterRegion] = useState("");
 
+  var groupOfFilters = [
+    filterName,
+    filterLname,
+    filterDob,
+    filterGender,
+    filterRegion,
+  ];
+
   useEffect(() => {
-    filterSearch(
-      filterName,
-      filterLname,
-      filterDob,
-      filterGender,
-      filterRegion
-    );
+    if (filterSearching) {
+      filterSearch(
+        filterName,
+        filterLname,
+        filterDob,
+        filterGender,
+        filterRegion
+      );
+    }
   }, [filterSearching]);
 
   useEffect(() => {
@@ -37,6 +49,7 @@ function Home() {
     PostData("get_employees_paged", getEmployeesParams).then((result) => {
       setResults(result);
       setLoading(false);
+      setFilterSearching(false);
     });
 
     //Code to get amount of pages
@@ -62,14 +75,14 @@ function Home() {
   const filterSearch = (name, lname, dob, gender, region) => {
     var filterParams = new URLSearchParams();
     filterParams.append("fname", name);
-    console.log("Filter Name: " + filterName);
     filterParams.append("lname", lname);
     filterParams.append("dob", dob);
     filterParams.append("gender", gender);
     filterParams.append("region", region);
     PostData("find_employee_detail", filterParams).then((result) => {
       setResults(result);
-      setFiltering(false);
+      setSearching(true);
+      setFilterSearching(false);
       setLoading(false);
     });
   };
@@ -105,62 +118,36 @@ function Home() {
         onRegionChange={(event) => {
           setFilterRegion(event.target.value);
         }}
-        nameValue={filterName}
-        lnameValue={filterLname}
-        dobValue={filterDob}
-        regionValue={filterRegion}
-        genderValue={filterGender}
+        values={groupOfFilters}
         onButtonClick={() => {
           setResults([]);
           setLoading(true);
           setFilterSearching(true);
         }}
       />
-      <div className="side_container">
-        <div className="side_logo_container"></div>
-        <div className="side_profile_container">
-          <img
-            src="http://intermedia.ge/uploads/article_images/small/57461354446771.jpg"
-            alt="Mikheil Saakashvili"
-          ></img>
-          <p>SuperUser</p>
-        </div>
-      </div>
+      <SideMenu />
       <div className="content_container">
-        <div className="search_container">
-          <div className="search_input_container">
-            <input
-              type="text"
-              placeholder="First Name"
-              value={searchName}
-              onChange={(event) => {
-                setSearchName(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={searchLname}
-              onChange={(event) => {
-                setSearchLname(event.target.value);
-              }}
-            />
-          </div>
-          <div
-            className="search_button1"
-            onClick={() => {
-              setSearching(true);
-              setResults([]);
-              setLoading(true);
-              sendRequest(searchName, searchLname);
-            }}
-          >
-            Search
-          </div>
-          <div className="search_button2" onClick={() => setFiltering(true)}>
-            Filter
-          </div>
-        </div>
+        <TopBar
+          NameValue={searchName}
+          OnNameChange={(event) => {
+            setSearchName(event.target.value);
+          }}
+          LnameValue={searchLname}
+          OnLnameChange={(event) => {
+            setSearchLname(event.target.value);
+          }}
+          OnSearchClick={() => {
+            setSearching(true);
+            setResults([]);
+            setLoading(true);
+            sendRequest(searchName, searchLname);
+          }}
+          OnFilterClick={() => {
+            setFiltering(true);
+          }}
+        />
+        {/* ///////////////////// */}
+
         <div className="results_container">
           <table className="results_table">
             <tr>
