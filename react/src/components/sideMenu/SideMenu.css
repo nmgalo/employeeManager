@@ -11,6 +11,51 @@
   width: 9%;
 }
 
+/* .side_navigation_link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  background-repeat: round;
+  background-size: contain;
+  background-image: url("https://www.cityofwaupaca.org/parksnrec/wp-content/uploads/sites/3/2014/05/Blue-button.png");
+  text-align: center;
+  border-radius: 0.3rem;
+} */
+
+.side_navigation {
+  background-color: rgb(31, 32, 107);
+
+  display: block;
+  align-items: center;
+  padding: 0 0;
+}
+
+.side_navigation,
+.side_navigation li {
+  list-style-type: none;
+  margin: 0;
+}
+
+.side_navigation li {
+  border: rgb(83, 78, 94) 1px solid;
+}
+
+.side_navigation_link {
+  display: inline-block;
+  font-size: 1.1rem;
+  margin-left: 20px;
+}
+
+.side_navigation_link_image {
+  width: 15px;
+  margin-left: 10px;
+  display: inline-block;
+  height: 15px;
+  background-color: rgb(183, 0, 255);
+  border-radius: 0.2rem;
+}
+
 .side_logo_container {
   background-size: contain;
   background-image: url("https://ak.picdn.net/shutterstock/videos/15374881/thumb/1.jpg");

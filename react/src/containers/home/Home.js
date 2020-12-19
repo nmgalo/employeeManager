@@ -56,7 +56,7 @@ function Home() {
 
     var pageParams = new URLSearchParams();
     pageParams.append("amount_on_page", "10");
-    PostData("get_employees_paged", pageParams).then((result) => {
+    PostData("find_pages_amount", pageParams).then((result) => {
       setPageAmount(parseInt(result));
     });
   }, [currentPage]);
@@ -125,93 +125,91 @@ function Home() {
           setFilterSearching(true);
         }}
       />
-      <SideMenu />
-      <div className="content_container">
-        <TopBar
-          NameValue={searchName}
-          OnNameChange={(event) => {
-            setSearchName(event.target.value);
-          }}
-          LnameValue={searchLname}
-          OnLnameChange={(event) => {
-            setSearchLname(event.target.value);
-          }}
-          OnSearchClick={() => {
-            setSearching(true);
-            setResults([]);
-            setLoading(true);
-            sendRequest(searchName, searchLname);
-          }}
-          OnFilterClick={() => {
-            setFiltering(true);
-          }}
-        />
-        {/* ///////////////////// */}
+      <TopBar
+        inHome={true}
+        NameValue={searchName}
+        OnNameChange={(event) => {
+          setSearchName(event.target.value);
+        }}
+        LnameValue={searchLname}
+        OnLnameChange={(event) => {
+          setSearchLname(event.target.value);
+        }}
+        OnSearchClick={() => {
+          setSearching(true);
+          setResults([]);
+          setLoading(true);
+          sendRequest(searchName, searchLname);
+        }}
+        OnFilterClick={() => {
+          setFiltering(true);
+        }}
+      />
+      {/* ///////////////////// */}
 
-        <div className="results_container">
-          <table className="results_table">
-            <tr>
-              <th>Picture</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Private Number</th>
-              <th>Date of Birth</th>
-              <th>Gender</th>
-              <th>Address</th>
-            </tr>
+      <div className="results_container">
+        <table className="results_table">
+          <tr>
+            <th>Picture</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Private Number</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Address</th>
+          </tr>
 
-            {results.map((item, index) => (
-              <Person
-                info={item}
-                key={index}
-                onAddressClick={() => {
+          {results.map((item, index) => (
+            <Person
+              info={item}
+              key={index}
+              onAddressClick={() => {
+                setResults([]);
+                setSearching(true);
+                setLoading(true);
+                console.log(item.living_place);
+                fromAddress(item.living_place);
+              }}
+            />
+          ))}
+        </table>
+        {loading === true ? <Spinner /> : null}
+        {searching === false ? (
+          <div className="pagination">
+            {[...Array(6)]
+              .map((e, i) =>
+                currentPage - i > 0 && currentPage - i !== currentPage ? (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setResults([]);
+                      setLoading(true);
+                      setCurrentPage(currentPage - i);
+                    }}
+                  >
+                    {currentPage - i}
+                  </button>
+                ) : null
+              )
+              .reverse()}
+            {[...Array(6)].map((e, i) => (
+              <button
+                key={i}
+                className={i === 0 ? "active" : null}
+                onClick={() => {
                   setResults([]);
-                  setSearching(true);
                   setLoading(true);
-                  console.log(item.living_place);
-                  fromAddress(item.living_place);
+                  setCurrentPage(currentPage + i);
                 }}
-              />
+              >
+                {currentPage + i}
+              </button>
             ))}
-          </table>
-          {loading === true ? <Spinner /> : null}
-          {searching === false ? (
-            <div className="pagination">
-              {[...Array(6)]
-                .map((e, i) =>
-                  currentPage - i > 0 && currentPage - i !== currentPage ? (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setResults([]);
-                        setLoading(true);
-                        setCurrentPage(currentPage - i);
-                      }}
-                    >
-                      {currentPage - i}
-                    </button>
-                  ) : null
-                )
-                .reverse()}
-              {[...Array(6)].map((e, i) => (
-                <button
-                  key={i}
-                  className={i === 0 ? "active" : null}
-                  onClick={() => {
-                    setResults([]);
-                    setLoading(true);
-                    setCurrentPage(currentPage + i);
-                  }}
-                >
-                  {currentPage + i}
-                </button>
-              ))}
-            </div>
-          ) : null}
+          </div>
+        ) : null}
 
-          {/* I am on page 63 I should be seeing pages 60 to 66 */}
-          {/*  */}
-        </div>
+        {/* I am on page 63 I should be seeing pages 60 to 66 */}
+        {/*  */}
       </div>
     </div>
   );
