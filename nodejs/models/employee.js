@@ -18,6 +18,13 @@ module.exports = class Employee {
     );
   }
 
+  static findFromAll(fname, lname) {
+    return sql.execute(
+      "SELECT * FROM `allcitizens` WHERE first_name=? AND last_name=?",
+      [fname, lname]
+    );
+  }
+
   static findPagesAmount() {
     return sql.execute("SELECT COUNT(*) as Amount FROM citizens");
   }

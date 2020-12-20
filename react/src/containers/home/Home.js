@@ -126,7 +126,7 @@ function Home() {
         }}
       />
       <TopBar
-        inHome={true}
+        searching={true}
         NameValue={searchName}
         OnNameChange={(event) => {
           setSearchName(event.target.value);

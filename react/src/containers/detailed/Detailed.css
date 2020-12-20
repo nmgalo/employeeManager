@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url(../../services/acad_nusx_geo.woff2) format("woff2");
+}
+
+.detailed_container {
+  margin: 2.5% 2.5%;
+  display: flex;
+  flex-flow: wrap;
+}
+
+.detailed_card {
+  display: flex;
+  flex-direction: column;
+  border: 1.5px silver solid;
+  align-items: center;
+  width: 200px;
+  box-shadow: 1px 1.2px 8px;
+  margin: 0 4.65% 2% 0;
+}
+
+.detailed_card h2 {
+  font-size: 1.1rem;
+  font-family: MyFont;
+}
+
+.detailed_card img {
+  width: 140px;
+  height: 180px;
+}
+
+.detailed_card p {
+  align-self: start;
+  margin: 10px 0 0 30px;
+}

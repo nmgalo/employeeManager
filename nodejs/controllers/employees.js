@@ -1,5 +1,5 @@
 const Employee = require("../models/employee");
-const sql = require("../utility/sql");
+const tr = require("transliteration").transliterate;
 
 exports.postEmployeeFind = (req, res, next) => {
   const fname = req.body.fname;
@@ -31,11 +31,32 @@ exports.findPagesAmount = (req, res, next) => {
     });
 };
 
+exports.findFromAll = (req, res, next) => {
+  let fname = req.body.fname;
+  let lname = req.body.lname;
+  fname = fname.replace(/ჭ/g, "W");
+  fname = fname.replace(/შ/g, "S");
+  fname = fname.replace(/ძ/g, "Z");
+  fname = fname.replace(/თ/g, "t");
+  lname = lname.replace(/ჭ/g, "W");
+  lname = lname.replace(/შ/g, "S");
+  lname = lname.replace(/ძ/g, "Z");
+  lname = lname.replace(/თ/g, "t");
+  console.log(tr(fname));
+  console.log(tr(lname));
+  Employee.findFromAll(tr(fname), tr(lname))
+    .then(([result, bufData]) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.postFromAddress = (req, res, next) => {
   let address = req.body.address;
   Employee.fromAddress(address)
     .then(([result, bufData]) => {
-      console.log(result);
       res.send(result);
     })
     .catch((err) => {
@@ -46,7 +67,6 @@ exports.postFromAddress = (req, res, next) => {
 exports.getEmployees = (req, res, next) => {
   Employee.getEmployees()
     .then(([people, bufData]) => {
-      console.log(people);
       res.send(people);
     })
     .catch((err) => {
@@ -72,7 +92,6 @@ exports.postEmployeeFindDetail = (req, res, next) => {
   const gender = req.body.gender;
   const region = req.body.region;
 
-  console.log(req.body);
   Employee.findEmployeeDetail(fname, lname, dob, gender, region)
     .then(([result, bufData]) => {
       {

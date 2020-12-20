@@ -7,7 +7,7 @@ const TopBar = (props) => {
   return (
     <>
       <div className="search_container">
-        {props.inHome === true ? (
+        {props.searching === true ? (
           <>
             <div className="search_input_container">
               <Input
@@ -26,11 +26,13 @@ const TopBar = (props) => {
               OnClick={props.OnSearchClick}
               title="Search"
             />
-            <Button
-              ClassName="search_button2"
-              OnClick={props.OnFilterClick}
-              title="Filter"
-            />
+            {props.notFiltering === false ? (
+              <Button
+                ClassName="search_button2"
+                OnClick={props.OnFilterClick}
+                title="Filter"
+              />
+            ) : null}
           </>
         ) : null}
 
