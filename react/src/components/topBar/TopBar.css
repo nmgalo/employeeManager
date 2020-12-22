@@ -3,11 +3,11 @@
   background-color: #000e4f;
   width: 100%;
   align-items: center;
-  height: 4.5rem;
+  height: 60px;
 }
 
 .search_input_container {
-  margin: 0 3rem 0 7rem;
+  margin: 0 auto;
 }
 
 .search_input_container input {
