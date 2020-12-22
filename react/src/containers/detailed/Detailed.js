@@ -11,19 +11,17 @@ const Detailed = (props) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {}, [results]);
   const getDetailed = (pid, year, index) => {
-    PostSecretData(pid, year)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        // results[index].image = "wow";
-        // console.log();
-        results[index].image = data.photos.base64Binary[0];
-        setResults([...results]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // PostSecretData(pid, year)
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     results[index].image = data.photos.base64Binary[0];
+    //     setResults([...results]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   const sendRequest = (fname, lname) => {

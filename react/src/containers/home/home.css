@@ -4,7 +4,8 @@ body {
 }
 
 .content_container {
-  margin: 0 0 0 9%;
+  /* margin: 0 0 0 9%; */
+  margin-left: 190px;
 }
 
 .results_container {

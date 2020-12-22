@@ -4,14 +4,12 @@ import Person from "../../components/person/Person";
 import Spinner from "../../components/spinner/Spinner";
 import Modal from "../../components/modal/Modal";
 import { PostData } from "../../services/PostData";
-import SideMenu from "../../components/sideMenu/SideMenu";
 import TopBar from "../../components/topBar/TopBar";
 
 function Home() {
   const [searchName, setSearchName] = useState("");
   const [searchLname, setSearchLname] = useState("");
   const [results, setResults] = useState([]);
-  const [pageAmount, setPageAmount] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
@@ -46,21 +44,18 @@ function Home() {
   useEffect(() => {
     var getEmployeesParams = new URLSearchParams();
     getEmployeesParams.append("page", currentPage);
-    PostData("get_employees_paged", getEmployeesParams).then((result) => {
-      setResults(result);
-      setLoading(false);
-      setFilterSearching(false);
-    });
-
-    //Code to get amount of pages
-
-    var pageParams = new URLSearchParams();
-    pageParams.append("amount_on_page", "10");
-    PostData("find_pages_amount", pageParams).then((result) => {
-      setPageAmount(parseInt(result));
-    });
+    PostData("get_employees_paged", getEmployeesParams)
+      .then((result) => {
+        setResults(result);
+        setLoading(false);
+        setFilterSearching(false);
+      })
+      .catch(() => {
+        setResults([]);
+        setLoading(false);
+        setFilterSearching(false);
+      });
   }, [currentPage]);
-  //add Currentpage to useeffect update
 
   const sendRequest = (fname, lname) => {
     var findParams = new URLSearchParams();
@@ -145,7 +140,6 @@ function Home() {
           setFiltering(true);
         }}
       />
-      {/* ///////////////////// */}
 
       <div className="results_container">
         <table className="results_table">
@@ -158,20 +152,21 @@ function Home() {
             <th>Gender</th>
             <th>Address</th>
           </tr>
-
-          {results.map((item, index) => (
-            <Person
-              info={item}
-              key={index}
-              onAddressClick={() => {
-                setResults([]);
-                setSearching(true);
-                setLoading(true);
-                console.log(item.living_place);
-                fromAddress(item.living_place);
-              }}
-            />
-          ))}
+          <tbody>
+            {results.map((item, index) => (
+              <Person
+                info={item}
+                key={index}
+                onAddressClick={() => {
+                  setResults([]);
+                  setSearching(true);
+                  setLoading(true);
+                  console.log(item.living_place);
+                  fromAddress(item.living_place);
+                }}
+              />
+            ))}
+          </tbody>
         </table>
         {loading === true ? <Spinner /> : null}
         {searching === false ? (
@@ -192,7 +187,7 @@ function Home() {
                 ) : null
               )
               .reverse()}
-            {[...Array(6)].map((e, i) => (
+            {[...Array(6)].map((_e, i) => (
               <button
                 key={i}
                 className={i === 0 ? "active" : null}
@@ -207,9 +202,6 @@ function Home() {
             ))}
           </div>
         ) : null}
-
-        {/* I am on page 63 I should be seeing pages 60 to 66 */}
-        {/*  */}
       </div>
     </div>
   );
