@@ -152,21 +152,19 @@ function Home() {
             <th>Gender</th>
             <th>Address</th>
           </tr>
-          <tbody>
-            {results.map((item, index) => (
-              <Person
-                info={item}
-                key={index}
-                onAddressClick={() => {
-                  setResults([]);
-                  setSearching(true);
-                  setLoading(true);
-                  console.log(item.living_place);
-                  fromAddress(item.living_place);
-                }}
-              />
-            ))}
-          </tbody>
+          {results.map((item, index) => (
+            <Person
+              info={item}
+              key={index}
+              onAddressClick={() => {
+                setResults([]);
+                setSearching(true);
+                setLoading(true);
+                console.log(item.living_place);
+                fromAddress(item.living_place);
+              }}
+            />
+          ))}
         </table>
         {loading === true ? <Spinner /> : null}
         {searching === false ? (

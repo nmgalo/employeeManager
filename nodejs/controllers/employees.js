@@ -45,8 +45,6 @@ exports.findFromAll = (req, res, next) => {
   lname = lname.replace(/ძ/g, "Z");
   lname = lname.replace(/თ/g, "t");
   lname = lname.replace(/ც/g, "c");
-  console.log(tr(fname));
-  console.log(tr(lname));
   Employee.findFromAll(tr(fname), tr(lname))
     .then(([result, bufData]) => {
       res.send(result);
@@ -70,6 +68,14 @@ exports.postFromAddress = (req, res, next) => {
 exports.findWithPid = (req, res, next) => {
   lname = req.body.lname;
   pid = req.body.pid;
+  lname = lname.replace(/S/g, "შ");
+  lname = lname.replace(/Z/g, "ძ");
+  lname = lname.replace(/W/g, "წ");
+  lname = lname.replace(/T/g, "თ");
+  lname = lname.replace(/c/g, "ც");
+
+  console.log(translit(lname));
+  console.log(pid);
   Employee.findWithPid(pid, translit(lname))
     .then(([result, bufData]) => {
       res.send(result);
