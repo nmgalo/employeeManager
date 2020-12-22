@@ -1,17 +1,14 @@
 const Employee = require("../models/employee");
 const tr = require("transliteration").transliterate;
 var translit = require("translitit-latin-to-mkhedruli-georgian");
+const translitSpecial = require("../utility/translit");
 
 exports.postEmployeeFind = (req, res, next) => {
   const fname = req.body.fname;
   const lname = req.body.lname;
 
-  console.log(fname);
-  console.log(lname);
-
   Employee.findEmployee(fname, lname)
     .then(([person, bufData]) => {
-      console.log(person);
       res.send(person);
     })
     .catch((err) => {
@@ -35,16 +32,9 @@ exports.findPagesAmount = (req, res, next) => {
 exports.findFromAll = (req, res, next) => {
   let fname = req.body.fname;
   let lname = req.body.lname;
-  fname = fname.replace(/ჭ/g, "W");
-  fname = fname.replace(/შ/g, "S");
-  fname = fname.replace(/ძ/g, "Z");
-  fname = fname.replace(/თ/g, "t");
-  fname = fname.replace(/ც/g, "c");
-  lname = lname.replace(/ჭ/g, "W");
-  lname = lname.replace(/შ/g, "S");
-  lname = lname.replace(/ძ/g, "Z");
-  lname = lname.replace(/თ/g, "t");
-  lname = lname.replace(/ც/g, "c");
+  fname = translitSpecial.translitSpecial2(fname);
+  lname = translitSpecial.translitSpecial2(lname);
+
   Employee.findFromAll(tr(fname), tr(lname))
     .then(([result, bufData]) => {
       res.send(result);
@@ -68,14 +58,8 @@ exports.postFromAddress = (req, res, next) => {
 exports.findWithPid = (req, res, next) => {
   lname = req.body.lname;
   pid = req.body.pid;
-  lname = lname.replace(/S/g, "შ");
-  lname = lname.replace(/Z/g, "ძ");
-  lname = lname.replace(/W/g, "წ");
-  lname = lname.replace(/T/g, "თ");
-  lname = lname.replace(/c/g, "ც");
+  lname = translitSpecial.translitSpecial(lname);
 
-  console.log(translit(lname));
-  console.log(pid);
   Employee.findWithPid(pid, translit(lname))
     .then(([result, bufData]) => {
       res.send(result);

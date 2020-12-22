@@ -6,6 +6,7 @@ const SideMenu = (props) => {
   return (
     <>
       <div className="side_container">
+        <div className="side_logo_container"></div>
         <ul className="side_navigation">
           <li>
             <NavLink
