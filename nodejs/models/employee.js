@@ -35,6 +35,13 @@ module.exports = class Employee {
     ]);
   }
 
+  static findWithPid(pid, lname) {
+    return sql.execute(
+      "SELECT * FROM `citizens` WHERE last_name=? AND private_number=?",
+      [lname, pid]
+    );
+  }
+
   static getEmployees() {
     return sql.execute("SELECT * FROM `citizens` LIMIT 2");
   }

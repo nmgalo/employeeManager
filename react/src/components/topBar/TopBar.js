@@ -26,7 +26,7 @@ const TopBar = (props) => {
               OnClick={props.OnSearchClick}
               title="Search"
             />
-            {props.notFiltering === false ? (
+            {props.notFiltering !== true ? (
               <Button
                 ClassName="search_button2"
                 OnClick={props.OnFilterClick}

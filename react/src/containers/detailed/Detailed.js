@@ -3,6 +3,7 @@ import "./Detailed.css";
 import TopBar from "../../components/topBar/TopBar";
 import { PostData } from "../../services/PostData";
 import { PostSecretData } from "../../services/PostSecretData";
+import Spinner from "../../components/spinner/Spinner";
 
 const Detailed = (props) => {
   const [fname, setFname] = useState("");
@@ -34,9 +35,31 @@ const Detailed = (props) => {
     PostData("find_from_all", findParams).then((result) => {
       result.forEach(function (person) {
         person.image = "false";
+
+        var pageParams = new URLSearchParams();
+        pageParams.append("pid", person.pid);
+        pageParams.append("lname", person.last_name);
+
+        PostData("find_with_pid", pageParams)
+          .then((resp) => {
+            console.log(resp);
+            if (resp.length > 0) {
+              //
+              //
+
+              person.image = resp[0].image_code;
+              setResults([...results]);
+            }
+          })
+          .then(() => {
+            console.log(result);
+            setResults(result);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
-      setResults(result);
-      setLoading(false);
     });
   };
 
@@ -59,6 +82,7 @@ const Detailed = (props) => {
           sendRequest(fname, lname);
         }}
       />
+      {loading === true ? <Spinner /> : null}
       <div className="detailed_container">
         {results.map((result, index) => (
           <div className="detailed_card" key={index}>

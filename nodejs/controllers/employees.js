@@ -1,5 +1,6 @@
 const Employee = require("../models/employee");
 const tr = require("transliteration").transliterate;
+var translit = require("translitit-latin-to-mkhedruli-georgian");
 
 exports.postEmployeeFind = (req, res, next) => {
   const fname = req.body.fname;
@@ -38,10 +39,12 @@ exports.findFromAll = (req, res, next) => {
   fname = fname.replace(/შ/g, "S");
   fname = fname.replace(/ძ/g, "Z");
   fname = fname.replace(/თ/g, "t");
+  fname = fname.replace(/ც/g, "c");
   lname = lname.replace(/ჭ/g, "W");
   lname = lname.replace(/შ/g, "S");
   lname = lname.replace(/ძ/g, "Z");
   lname = lname.replace(/თ/g, "t");
+  lname = lname.replace(/ც/g, "c");
   console.log(tr(fname));
   console.log(tr(lname));
   Employee.findFromAll(tr(fname), tr(lname))
@@ -56,6 +59,18 @@ exports.findFromAll = (req, res, next) => {
 exports.postFromAddress = (req, res, next) => {
   let address = req.body.address;
   Employee.fromAddress(address)
+    .then(([result, bufData]) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.findWithPid = (req, res, next) => {
+  lname = req.body.lname;
+  pid = req.body.pid;
+  Employee.findWithPid(pid, translit(lname))
     .then(([result, bufData]) => {
       res.send(result);
     })
