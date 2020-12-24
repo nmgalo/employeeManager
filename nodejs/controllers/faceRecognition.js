@@ -10,7 +10,6 @@ exports.faceRecognition = (req, res, next) => {
     picURL,
   ]);
   pythonProcess.stdout.on("data", function (data) {
-    console.log(data.toString());
     res.send({ probability: data.toString() });
   });
 };
