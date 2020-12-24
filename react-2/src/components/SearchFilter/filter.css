@@ -1,0 +1,46 @@
+.filter_container {
+  width: 100%;
+  margin-top: 25px;
+  border-radius: 8px;
+  padding: 25px;
+  box-sizing: border-box;
+  /* box-shadow: 0 10px 20px rgba(140, 140, 140, 0.1); */
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+}
+
+.filter_container > div {
+  flex: 1;
+}
+
+.filter_container > div input[type="text"] {
+  width: 95%;
+  padding: 10px 15px;
+  font-size: 17px;
+  border: 1px solid #ddd;
+  outline: none;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: 0.1s;
+  font-family: "Montserrat", sans-serif;
+}
+
+.filter_container > div input[type="text"]:focus {
+  border-color: #000;
+}
+
+.filter_container > div button {
+  width: 95%;
+  margin: 0 auto;
+  padding: 10px 15px;
+  border: 0;
+  font-size: 17.5px;
+  color: #fff;
+  border-radius: 8px;
+  background: #f64e53;
+  outline: 0;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+}
