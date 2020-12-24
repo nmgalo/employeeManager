@@ -1,0 +1,44 @@
+@import url("//cdn.web-fonts.ge/fonts/bpg-arial-caps/css/bpg-arial-caps.min.css");
+
+.search_results_wrapper {
+  margin-top: 20px;
+}
+
+.search_results_table {
+  width: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border-collapse: collapse;
+}
+
+.search_results_table tr th {
+  text-align: left;
+  border-bottom: 1.5px solid #ddd;
+  margin: 0;
+  padding: 15px;
+}
+
+.search_results_table tr:not(:last-child) {
+  border-bottom: 1px solid #f2f5f7;
+}
+
+.search_results_table tr td {
+  padding: 15px;
+}
+.search_results_table tr td > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.search_results_table tr td > div > span {
+  padding-left: 25px;
+  font-weight: bold;
+  font-family: "BPG Arial Caps", sans-serif;
+}
+
+.search_results_table tr td img {
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+}
