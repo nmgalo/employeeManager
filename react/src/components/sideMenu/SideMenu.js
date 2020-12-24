@@ -27,6 +27,15 @@ const SideMenu = (props) => {
               <div className="side_navigation_link">Detail</div>
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/facerec"
+              style={{ color: "ivory" }}
+              activeStyle={{ color: "red" }}
+            >
+              <div className="side_navigation_link">Face Recognition</div>
+            </NavLink>
+          </li>
         </ul>
       </div>
     </>

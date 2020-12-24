@@ -13,4 +13,6 @@ router.post("/from_address", hrController.postFromAddress);
 router.post("/find_from_all", hrController.findFromAll);
 router.post("/find_with_pid", hrController.findWithPid);
 router.post("/face_recognition", faceController.faceRecognition);
+router.post("/faceupload", faceController.imageUpload);
+router.use("/faceimages/:fileName", faceController.imageServe);
 module.exports = router;

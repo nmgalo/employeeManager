@@ -1,6 +1,9 @@
-export function PostData(url, params) {
+export function PostData(url, params, isFile) {
   var myHeaders0 = new Headers();
-  myHeaders0.append("Content-Type", "application/x-www-form-urlencoded");
+
+  if (isFile !== true) {
+    myHeaders0.append("Content-Type", "application/x-www-form-urlencoded");
+  }
 
   var requestOptions0 = {
     method: "POST",

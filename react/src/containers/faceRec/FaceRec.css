@@ -1,0 +1,35 @@
+.facerec_content {
+  margin: 2.5% 2.5%;
+}
+
+.facerec_form {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.facerec_form input {
+  align-self: center;
+}
+
+.facerec_form button {
+  margin: 5% 0 0 0;
+  align-self: center;
+  width: 30%;
+}
+
+.facerec_form img {
+  margin: 5% 0 0 0;
+  align-self: center;
+  max-width: 90%;
+}
+
+.facerec_results {
+  margin: 5% 0 0 0;
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: firebrick;
+  display: block;
+  text-align: center;
+}
