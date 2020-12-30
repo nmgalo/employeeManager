@@ -19,7 +19,9 @@ module.exports = class Employee {
   }
 
   static findEmployeeV2(fname, lname, onPageAmount, pages) {
-    let start = parseInt(pages) * onPageAmount;
+    //If the page is 1, start is 0 and end is amount on page (10)
+    //if the page is 2, start is 10 and amount on page is 10
+    let start = parseInt(pages - 1) * onPageAmount;
     return sql.execute(
       "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? LIMIT ?, ?",
       [fname, lname, start, onPageAmount]
