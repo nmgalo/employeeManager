@@ -18,6 +18,21 @@ module.exports = class Employee {
     );
   }
 
+  static findEmployeeV2(fname, lname, onPageAmount, pages) {
+    let start = parseInt(pages) * onPageAmount;
+    return sql.execute(
+      "SELECT * FROM `citizens` WHERE first_name=? AND last_name=? LIMIT ?, ?",
+      [fname, lname, start, onPageAmount]
+    );
+  }
+
+  static findEmployeesAmount(fname, lname) {
+    return sql.execute(
+      "SELECT COUNT(*) AS 'result' FROM `citizens` WHERE first_name=? AND last_name=?",
+      [fname, lname]
+    );
+  }
+
   static findFromAll(fname, lname) {
     return sql.execute(
       "SELECT * FROM `allcitizens` WHERE first_name=? AND last_name=?",
@@ -50,9 +65,12 @@ module.exports = class Employee {
     //First page going to show me 20 entries (Limit 0 20)
     //Second page going to show me 20 entries (Limit 20 40)
 
-    let end = 10;
+    let onPageAmount = 10;
     let start = parseInt(page + 1) * 10;
-    return sql.execute("SELECT * FROM `citizens` LIMIT ?, ?", [start, end]);
+    return sql.execute("SELECT * FROM `citizens` LIMIT ?, ?", [
+      start,
+      onPageAmount,
+    ]);
   }
 
   static findEmployeeDetail(fname, lname, dob, gender, region) {
