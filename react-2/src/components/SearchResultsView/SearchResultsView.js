@@ -8,30 +8,17 @@ export default function SearchResultsView() {
   const [searchResult, setSearchResults] = useState([]);
   const [sumOfResults, setSumOfResults] = useState(null);
 
+  const onPageSelectCallback = (pageNumber) => {
+    // TODO implement this function
+  };
+
   useEffect(() => {
-    setSumOfResults(12);
-    setSearchResults([
-      {
-        id: 1,
-        name: "Nick",
-        lastName: "Mgaloblishvili",
-        personalNumber: "321931",
-        dateOfBirth: "02.08.2001",
-        gender: "Male",
-        faceImage:
-          "https://www.fbi.gov/wanted/vicap/unidentified-persons/jane-doe-17/@@images/image/large",
-      },
-      {
-        id: 2,
-        name: "აბდულ ჯაბარი ნავაროტკებით",
-        lastName: "გოდოს შვილით",
-        personalNumber: "321389712",
-        dateOfBirth: "12.12.1999",
-        gender: "Female",
-        faceImage:
-          "https://www.fbi.gov/wanted/vicap/unidentified-persons/jane-doe-17/@@images/image/large",
-      },
-    ]);
+    fetch("https://run.mocky.io/v3/12a923fd-7c84-4e0d-b431-e9badb745cde")
+      .then((response) => response.json())
+      .then((response) => {
+        setSumOfResults(response.resultCount);
+        setSearchResults(response.results);
+      });
   }, []);
 
   return (
@@ -64,9 +51,9 @@ export default function SearchResultsView() {
         </tbody>
       </table>
       <PaginationView
-        amountOfItems="12"
-        currentPage="1"
-        amountItemsLimitOnView="6"
+        amountOfItems={sumOfResults}
+        itemsViewLimit="15"
+        onPageSelectCallback={(it) => onPageSelectCallback(it)}
       />
     </div>
   );
