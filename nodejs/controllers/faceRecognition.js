@@ -10,10 +10,6 @@ exports.faceRecognition = (req, res, next) => {
     "./utility/FaceRec/labtest.py",
     picURL,
   ]);
-<<<<<<< HEAD
-  pythonProcess.stdout.on("data", function (data) {
-    res.send({ probability: data.toString() });
-=======
   pythonProcess.stdout.on("data", function (incomingData) {
     data = JSON.parse(incomingData);
     results = [{}];
@@ -22,7 +18,6 @@ exports.faceRecognition = (req, res, next) => {
     });
 
     res.send(results);
->>>>>>> 1b327a36cb7f80b4dc0a57bc96cfc406921c8692
   });
 };
 
