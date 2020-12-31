@@ -2,3 +2,4 @@
 /nodejs/node_modules/*
 /react/src/services/PostSecretData.js
 .DS_Store
+/nodejs/utility/FaceRec/dataset
