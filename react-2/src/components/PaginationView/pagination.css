@@ -1,0 +1,33 @@
+#pagination {
+  margin: 15px 0;
+}
+
+#pagination > ul {
+  display: flex;
+  list-style: none;
+}
+
+#pagination > ul > li > a {
+  color: #000;
+  text-decoration: none;
+}
+
+#pagination > ul > li {
+  padding: 0.375rem 0.75rem;
+}
+
+#pagination > ul > li.active {
+  background: #f64e53;
+}
+
+#pagination > ul > li.active a {
+  color: #fff;
+}
+
+#pagination > ul > li > button {
+  background: #f2f5f7;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+}
