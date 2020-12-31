@@ -4,22 +4,39 @@ import PaginationView from "../PaginationView/PaginationView";
 
 import "./results.css";
 
-export default function SearchResultsView() {
+export default function SearchResultsView({ searchFieldsData }) {
   const [searchResult, setSearchResults] = useState([]);
   const [sumOfResults, setSumOfResults] = useState(null);
+  const [page, setPage] = useState(1);
+
+  console.log(searchFieldsData);
 
   const onPageSelectCallback = (pageNumber) => {
-    // TODO implement this function
+    setPage(pageNumber);
   };
 
   useEffect(() => {
-    fetch("https://run.mocky.io/v3/12a923fd-7c84-4e0d-b431-e9badb745cde")
+    let data = {
+      first_name: searchFieldsData.name,
+      last_name: searchFieldsData.lastName,
+      page: page,
+      limit: 15,
+    };
+    var formData = new FormData();
+    for (let i in data) {
+      formData.append(i, data[i]);
+    }
+
+    fetch("http://localhost:4500/find_employee_v2", {
+      method: "POST",
+      body: formData,
+    })
       .then((response) => response.json())
       .then((response) => {
         setSumOfResults(response.resultCount);
         setSearchResults(response.results);
       });
-  }, []);
+  }, [page, searchFieldsData]);
 
   return (
     <div className="search_results_wrapper">
@@ -28,7 +45,7 @@ export default function SearchResultsView() {
           <tr>
             <th>Full Name</th>
             <th>ID number</th>
-            <th>Date Of birth</th>
+            <th>Address</th>
             <th>Gender</th>
           </tr>
         </thead>
@@ -37,15 +54,23 @@ export default function SearchResultsView() {
             <tr key={index}>
               <td rows="2">
                 <div>
-                  <img src={item.faceImage} alt="user" />
+                  <span>{item.image_code.charAt(0) === "/"}</span>
+                  <img
+                    src={
+                      item.image_code.charAt(0) === "/"
+                        ? `data:image/png;base64,${item.image_code}`
+                        : `data:image/png;base64,${atob(item.image_code)}`
+                    }
+                    alt="user"
+                  />
                   <span>
-                    {item.name} {item.lastName}
+                    {item.first_name} {item.last_name}
                   </span>
                 </div>
               </td>
-              <td rows="1">{item.personalNumber}</td>
-              <td rows="1">{item.dateOfBirth}</td>
-              <td rows="1">{item.gender}</td>
+              <td rows="1">{item.private_number}</td>
+              <td rows="1">{item.living_place}</td>
+              <td rows="1">{item.gender === 1 ? "Male" : "Female"}</td>
             </tr>
           ))}
         </tbody>

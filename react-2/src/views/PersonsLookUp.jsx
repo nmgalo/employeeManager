@@ -1,9 +1,13 @@
+import { useState } from "react";
+
 import SearchFilter from "../components/SearchFilter/SearchFilter";
 import SearchResultsView from "../components/SearchResultsView/SearchResultsView";
 
 const PersonsLookUp = () => {
+  const [searchFields, setSearchFields] = useState({});
+
   const onSearchFilterCallback = (searchData) => {
-    console.log(searchData);
+    setSearchFields(searchData);
   };
 
   return (
@@ -12,7 +16,7 @@ const PersonsLookUp = () => {
       <SearchFilter
         onSearchFilterCallback={(it) => onSearchFilterCallback(it)}
       />
-      <SearchResultsView />
+      <SearchResultsView searchFieldsData={searchFields} />
     </div>
   );
 };
