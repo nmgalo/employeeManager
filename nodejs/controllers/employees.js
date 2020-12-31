@@ -16,6 +16,25 @@ exports.postEmployeeFind = (req, res, next) => {
     });
 };
 
+exports.postEmployeeFindV2 = (req, res, next) => {
+  const fname = req.body.first_name;
+  const lname = req.body.last_name;
+  const onPage = req.body.limit;
+  const pages = req.body.page;
+
+  Employee.findEmployeeV2(fname, lname, onPage, pages)
+    .then(([person, bufData]) => {
+      Employee.findEmployeesAmount(fname, lname).then(
+        ([resultCount, bufData]) => {
+          res.send({ resultCount: resultCount[0].result, results: person });
+        }
+      );
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.findPagesAmount = (req, res, next) => {
   const amountOnPage = parseInt(req.body.amount_on_page);
   let amountOfPages = 0;
