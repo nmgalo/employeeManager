@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import PaginationView from "../PaginationView/PaginationView";
+import PersonSearchLoader from "../SkeletonLoaders/PersonSearchLoader";
 
 import "./results.css";
 
@@ -8,6 +9,7 @@ export default function SearchResultsView({ searchFieldsData }) {
   const [searchResult, setSearchResults] = useState([]);
   const [sumOfResults, setSumOfResults] = useState(null);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   console.log(searchFieldsData);
 
@@ -16,6 +18,7 @@ export default function SearchResultsView({ searchFieldsData }) {
   };
 
   useEffect(() => {
+    setLoading(true);
     let data = {
       first_name: searchFieldsData.name,
       last_name: searchFieldsData.lastName,
@@ -33,6 +36,7 @@ export default function SearchResultsView({ searchFieldsData }) {
     })
       .then((response) => response.json())
       .then((response) => {
+        setLoading(false);
         setSumOfResults(response.resultCount);
         setSearchResults(response.results);
       });
@@ -40,46 +44,52 @@ export default function SearchResultsView({ searchFieldsData }) {
 
   return (
     <div className="search_results_wrapper">
-      <table className="search_results_table">
-        <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>ID number</th>
-            <th>Address</th>
-            <th>Gender</th>
-          </tr>
-        </thead>
-        <tbody>
-          {searchResult.map((item, index) => (
-            <tr key={index}>
-              <td rows="2">
-                <div>
-                  <span>{item.image_code.charAt(0) === "/"}</span>
-                  <img
-                    src={
-                      item.image_code.charAt(0) === "/"
-                        ? `data:image/png;base64,${item.image_code}`
-                        : `data:image/png;base64,${atob(item.image_code)}`
-                    }
-                    alt="user"
-                  />
-                  <span>
-                    {item.first_name} {item.last_name}
-                  </span>
-                </div>
-              </td>
-              <td rows="1">{item.private_number}</td>
-              <td rows="1">{item.living_place}</td>
-              <td rows="1">{item.gender === 1 ? "Male" : "Female"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <PaginationView
-        amountOfItems={sumOfResults}
-        itemsViewLimit="15"
-        onPageSelectCallback={(it) => onPageSelectCallback(it)}
-      />
+      {loading ? (
+        <PersonSearchLoader />
+      ) : (
+        <>
+          <table className="search_results_table">
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>ID number</th>
+                <th>Address</th>
+                <th>Gender</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchResult.map((item, index) => (
+                <tr key={index}>
+                  <td rows="2">
+                    <div>
+                      <span>{item.image_code.charAt(0) === "/"}</span>
+                      <img
+                        src={
+                          item.image_code.charAt(0) === "/"
+                            ? `data:image/png;base64,${item.image_code}`
+                            : `data:image/png;base64,${atob(item.image_code)}`
+                        }
+                        alt="user"
+                      />
+                      <span>
+                        {item.first_name} {item.last_name}
+                      </span>
+                    </div>
+                  </td>
+                  <td rows="1">{item.private_number}</td>
+                  <td rows="1">{item.living_place}</td>
+                  <td rows="1">{item.gender === 1 ? "Male" : "Female"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <PaginationView
+            amountOfItems={sumOfResults}
+            itemsViewLimit="15"
+            onPageSelectCallback={(it) => onPageSelectCallback(it)}
+          />
+        </>
+      )}
     </div>
   );
 }
